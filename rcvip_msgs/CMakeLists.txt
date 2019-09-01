@@ -103,7 +103,8 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES rcvip_msgs
 #  CATKIN_DEPENDS other_catkin_pkg
-  DEPENDS system_lib std_msgs
+#  DEPENDS system_lib
+  DEPENDS std_msgs
 )
 
 ###########
