@@ -1,17 +1,24 @@
 // ppm generation
+// Nick Zhang 2019
 // The PPM signal is generated with the following convention
 // A complete PPM frame is about 22.5 ms (can vary between manufacturer), and signal low state is always 0.3 ms. It begins with a start frame (high state for more than 2 ms). Each channel (up to 8) is encoded by the time of the high state (PPM high state + 0.3 × (PPM low state) = servo PWM pulse width).
-// This means a 1000-2000 PWM translates to 100-1100 High state
+// This means a 1000-2000 PWM translates to ???? High state
 
+#include <Arduino.h>
+#include <ros.h>
+#include <rcvip_msgs/RCchannel.h>
 
-// Channel
+// Channel, if more channels are needed make sure you update msg/RCchannel.msg as well
 #define CHANNEL_NO 4
+#define RC_MAX 2000
+#define RC_MIN 1000
 
 const int output_pin = 4;
 // channels go from 1 - channel_no
 // the extra channel 0 is reserved for TSYNC to indicate end of a frame
 // unit of value is us for servo PWM
 // realistically 
+// XXX There may be a race condition on this variable
 volatile uint16_t channel[CHANNEL_NO+1] = {0};
 volatile bool lock_channel = false;
 
@@ -24,7 +31,6 @@ void timer1_init(){
     TCCR1C = 0; // PWM related stuff
     TIFR1 |= (1<<TOV1) | (1<<OCF1B) | (1<<OCF1A); // writing 1 to TOV1 clears the flag, preventing the ISR to be activated as soon as sei();
     TCNT1 = 0;
-    // TODO clear action sequence next_action=NONE to prevent accident triggering
 
     // prescaler: 64
     // duty cycle: (16*10^6) / (64*65536) Hz = 38Hz (3300us between overflow)
@@ -79,6 +85,24 @@ ISR(TIMER1_COMPB_vect) {
     digitalWrite(output_pin,LOW);
 }
 
+ros::NodeHandle nh;
+
+//XXX this may create a race condition
+void readChannelsTopic(const rcvip_msgs::RCchannel& msg_RCchannel){
+  for(int i=0; i<CHANNEL_NO; i++){
+    channel[i+1] = min(max(msg_RCchannel.ch[i],RC_MIN),RC_MAX);
+  }
+  // DEBUG XXX 
+  if (channel[1] > 1600){
+    digitalWrite(13,HIGH);
+  }else{
+    digitalWrite(13,LOW);
+  }
+
+}
+
+ros::Subscriber<rcvip_msgs::RCchannel> subRCchannel("vip_rc/channel", &readChannelsTopic);
+
 void setup(){
     // start of the frame
     channel[0] = 12000;
@@ -88,11 +112,14 @@ void setup(){
     channel[3] = 1000;
     channel[4] = 1000;
     pinMode(output_pin,OUTPUT);
+    pinMode(13,OUTPUT);
     timer1_init();
-    Serial.begin(115200);
+    nh.initNode();
+    nh.subscribe(subRCchannel);
 }
 
 void loop(){
+  /*
     if (Serial.available()>0) {
         float val = Serial.parseFloat();
         //ctrl_phase = fmap(val,0,360,0,2*pi);
@@ -105,5 +132,8 @@ void loop(){
         
     }
     delay(10);
+    */
+  nh.spinOnce();
+  delay(1);
 
 }
