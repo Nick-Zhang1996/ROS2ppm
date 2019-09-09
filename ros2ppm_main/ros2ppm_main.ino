@@ -76,8 +76,13 @@ ISR(TIMER1_COMPA_vect) {
     next_channel %= CHANNEL_NO + 1;
 
     // assert channel[?] > 300
-    next_action_t1a(channel[next_channel]);
-    next_action_t1b(channel[next_channel]-300);
+    if (next_channel==0){
+        next_action_t1a(4500);
+        next_action_t1b(300);
+    }else{
+        next_action_t1a(channel[next_channel]);
+        next_action_t1b(channel[next_channel]-300);
+    }
 }
 
 ISR(TIMER1_COMPB_vect) {
