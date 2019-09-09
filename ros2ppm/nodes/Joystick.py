@@ -14,10 +14,10 @@ def joystick_callback(data):
     print(data.axes)
     msg = RCchannel()
     msg.header = data.header
-    # R knob? 1.0 undepressed, -1 fully depressed
-    msg.ch[0] = mapdata(data.axes[5],1.0,-1.0,1000,2000)
+    # R trigger 1.0 undepressed, -1 fully depressed
+    msg.ch[1] = mapdata(data.axes[5],1.0,-1.0,1500,1250)
     # left joystick? 1.0 left, -1 right
-    msg.ch[1] = mapdata(data.axes[0],1.0,-1.0,1000,2000)
+    msg.ch[0] = mapdata(data.axes[0],1.0,-1.0,1250,1750)
     pub.publish(msg)
 
 

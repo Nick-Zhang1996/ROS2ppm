@@ -97,7 +97,9 @@ ros::NodeHandle nh;
 
 //XXX this may create a race condition
 void readChannelsTopic(const rcvip_msgs::RCchannel& msg_RCchannel){
-  for(int i=0; i<CHANNEL_NO; i++){
+  //for(int i=0; i<CHANNEL_NO; i++){
+  // we only need ch1 and ch2
+  for(int i=0; i<2; i++){
     channel[i+1] = min(max(msg_RCchannel.ch[i],RC_MIN),RC_MAX);
   }
   // DEBUG XXX 
@@ -115,10 +117,10 @@ void setup(){
     // start of the frame
     channel[0] = 0;
 
-    channel[1] = 1000;
-    channel[2] = 800;
-    channel[3] = 1000;
-    channel[4] = 1000;
+    channel[1] = 1500;
+    channel[2] = 1500;
+    channel[3] = 1500;
+    channel[4] = 1500;
     pinMode(output_pin,OUTPUT);
     pinMode(13,OUTPUT);
     timer1_init();
