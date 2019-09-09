@@ -76,12 +76,15 @@ ISR(TIMER1_COMPA_vect) {
     next_channel %= CHANNEL_NO + 1;
 
     // assert channel[?] > 300
+    if (channel[next_channel]<301){
+      channel[next_channel]=310;
+    }
     if (next_channel==0){
-        next_action_t1a(4500);
+        next_action_t1a(6000);
         next_action_t1b(300);
     }else{
         next_action_t1a(channel[next_channel]);
-        next_action_t1b(channel[next_channel]-300);
+        next_action_t1b(300);
     }
 }
 
@@ -110,7 +113,7 @@ ros::Subscriber<rcvip_msgs::RCchannel> subRCchannel("vip_rc/channel", &readChann
 
 void setup(){
     // start of the frame
-    channel[0] = 12000;
+    channel[0] = 0;
 
     channel[1] = 1000;
     channel[2] = 800;
