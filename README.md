@@ -22,7 +22,8 @@ You can setup catkin to automate this build/upload process but it's a lot of wor
 You should now be able to control PPM output by Arduino by publishing to topic `rc_vip/channel`
 Go nuts
 
-
+#### Drive with a Joystick
+For demo, you can connect a linux supported joystick (like a xbox one game controller) and run `joy` ros node (add link here)  . `ros2ppm/nodes/Joystick.py` will allow you to control the car with your joystick
 
 #### TODO:
 * Put TK18 PPM on scope, record critical values
