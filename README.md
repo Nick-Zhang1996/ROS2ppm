@@ -26,9 +26,6 @@ Go nuts
 For demo, you can connect a linux supported joystick (like a xbox one game controller) and run `joy` ros node (add link here)  . `ros2ppm/nodes/Joystick.py` will allow you to control the car with your joystick
 
 #### TODO:
-* Put TK18 PPM on scope, record critical values
-* Draw PPM illustration, explain PPM graphically
-* Write ROS package
+* Draw PPM illustration, explain PPM graphically (halted unless people ask for it)
+* Write launch file, finish ROS package related stuff
 * [importent] write ROS package install tutorial [done]
-* ROS -> Arduino (rosserial_arduino) implementation
-* Testing
