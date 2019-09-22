@@ -8,7 +8,8 @@ project(ros2ppm)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  rosserial
+  rospy
+  rosserial_client
   rosserial_arduino
 )
 
@@ -115,7 +116,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+ include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -203,3 +204,35 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+rosserial_generate_ros_lib(
+    PACKAGE  rosserial_arduino
+    SCRIPT make_libraries.py
+)
+
+rosserial_configure_client(
+    DIRECTORY firmware
+    TOOLCHAIN_FILE ${ROSSERIAL_ARDUINO_TOOLCHAIN}
+)
+
+
+# -----------IMPORTANT   NOTE----------
+# if you modified/added new messages and used them in the arduino firmware, 
+# you need to re-build the message headers for rosserial, to do this:
+# 1. remove "ALL" from the arguments on the following line and build
+# 2.re-generate ros_lib in build space by
+#       a) rm -rf catkin_ws/build/rc_vip/ros_lib
+#       b) rosrun rosserial_arduino make_libraries.py ./  (when you are in build/rc_vip)
+# 3. restore "ALL" argument
+# 4. build package normally
+#rosserial_add_client_target(firmware arduino ALL)
+rosserial_add_client_target(firmware arduino )
+
+
+# To upload to arduino, first verify the path to arduino serial port
+# is correct in firmware/CMakelist.txt
+# then invoke:
+# catkin build --no-deps  rc_vip --make-args rc_vip_firmware_arduino-upload
+# or simply run the uploadToArduino.sh in this folder
+# Remember if you modify the path to arduino device, you need to rebuild the project
+rosserial_add_client_target(firmware arduino-upload)
