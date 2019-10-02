@@ -1,4 +1,5 @@
 <launch>
-	<node name="joystick_node" pkg="ros2ppm" type="Joystick.py" />
-	<node name="rosserial_arduino" pkg="rosserial_python" type="serial_node.py" args="/dev/ttyUSB0"/>
+	<node name="joy_node" pkg="joy" type="joy_node" />
+	<node name="joystick_remap" pkg="ros2ppm" type="Joystick.py" />
+	<node name="serial_link" pkg="rosserial_arduino" type="serial_node.py" args="/dev/ttyUSB0"/>
 </launch>
