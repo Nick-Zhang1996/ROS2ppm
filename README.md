@@ -30,7 +30,7 @@ To compile ros compatible code on Arduino IDE,
 You can setup catkin to automate this build/upload process but it's a lot of work for little benefit in my opinion.
 
 ### Running
-After rosserial node is up by running `rosrun rosserial_python serial_node.py /dev/ttyUSB0` assuming your arduino shows up on /dev/ttyUSB0` You should be able to control PPM output from Arduino by publishing to topic `rc_vip/channel` beware of range. It is possible that the requested pulsewidth can't be executed due to restrains in the firmware. 
+After rosserial node is up by running `rosrun rosserial_python serial_node.py /dev/ttyUSB0` assuming your arduino shows up on `/dev/ttyUSB0` You should be able to control PPM output from Arduino by publishing to topic `rc_vip/channel` beware of range. It is possible that the requested pulsewidth can't be executed due to restrains in the firmware. 
 
 #### TODO:
 * Implement braking and reversing with joystick
