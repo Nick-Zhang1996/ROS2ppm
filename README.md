@@ -1,19 +1,32 @@
 ## ROS 2 PPM Proj
-This project aims to develop a firmware that allows an AVR based Arduino(connected to a PC via USB) to subscribe to rostopics and then generate RC compatible PPM signal that can be fed to a high frequency module, which acts as a transmitter to control RC cars/planes, etc.
+This project developed a system that allows an AVR based Arduino(connected to a PC via USB) to subscribe to rostopics and then generate PPM signal that can be fed to a high frequency module, which acts as a transmitter to control RC cars/planes, etc.
 
-The code is tested on 328p based Arduino Nano, Ubuntu Linux running ROS kinetic, built with catkin tools, using dasmikro ASF compatible tx module to control Kyosho Miniz cars.
+The code is tested on 328p based Arduino Nano, Ubuntu Linux running ROS kinetic, built with catkin tools, using dasmikro ASF tx module to control Kyosho Miniz cars.
 
 ## Usage
+* Connect a Xbox controller (or equivalent with modification) to computer via USB
+* Connect an Arduino, equipped with a PPM high freq module, loaded with firmware supplied, to computer via USB
+* `roslaunch ros2ppm demo.launch` will allow a paired mini-z to be driven with the controller
 
 ### Build
 Before using this package, you should have ROS, catkin tools, rosserial properly installed. 
+
 You also need an catkin workspace initialized by `catkin init` (from catkin tools, not catkin_make suite in ROS.org tutorial)
+
 For more info on catkin tools click [here](https://catkin-tools.readthedocs.io/en/latest/index.html)
 
-Clone this repo into your `catkin_ws/src/`, build with `catkin config --install`, then `catkin build`
-Source `catkin_ws/install/setup.bash`
-Generate headers for Arduino IDE, by running `rosrun rosserial_arduino make_libraries.py ~/sketchbook/libraries` assuming `~/sketchbook/libraries` is where your arduino library folder is.
-Compile `ros2ppm_main.ino` with Arduino IDE and upload to Arduino. 
+#### Host computer side
+
+* Clone this repo, rosserial, and [rcvip_msgs](https://github.com/Nick-Zhang1996/rcvip_msgs) into your `catkin_ws/src/`, set the install flag with `catkin config --install`, then build with `catkin build`
+* Source `catkin_ws/install/setup.bash`
+
+#### Arduino side
+To compile ros compatible code on Arduino IDE, 
+
+* first generate headers for Arduino IDE, by running `rosrun rosserial_arduino make_libraries.py ~/sketchbook/libraries` assuming `~/sketchbook/libraries` is where your arduino library folder is.
+* Compile `ros2ppm_main.ino` with Arduino IDE and upload to Arduino. 
+* PPM output is on pin D4
+
 You can setup catkin to automate this build/upload process but it's a lot of work for little benefit in my opinion.
 
 ### Running
@@ -22,10 +35,5 @@ You can setup catkin to automate this build/upload process but it's a lot of wor
 You should now be able to control PPM output by Arduino by publishing to topic `rc_vip/channel`
 Go nuts
 
-#### Drive with a Joystick
-For demo, you can connect a linux supported joystick (like a xbox one game controller) and run `joy` ros node (add link here)  . `ros2ppm/nodes/Joystick.py` will allow you to control the car with your joystick
-
 #### TODO:
-* Draw PPM illustration, explain PPM graphically (halted unless people ask for it)
-* Write launch file, finish ROS package related stuff
-* [importent] write ROS package install tutorial [done]
+Implement braking and reversing with joystick
