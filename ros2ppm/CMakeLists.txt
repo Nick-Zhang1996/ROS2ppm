@@ -8,7 +8,6 @@ project(ros2ppm)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  rosserial
   rosserial_arduino
 )
 
@@ -104,7 +103,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES ros2ppm
-#  CATKIN_DEPENDS rosserial rosserial_arduino
+#  CATKIN_DEPENDS rosserial_arduino
 #  DEPENDS system_lib
 )
 
@@ -203,3 +202,4 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+

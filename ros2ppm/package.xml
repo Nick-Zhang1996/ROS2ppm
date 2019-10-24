@@ -51,7 +51,6 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>rosserial_arduino</build_depend>
   <build_export_depend>rosserial_arduino</build_export_depend>
-  <exec_depend>rosserial</exec_depend>
   <exec_depend>rosserial_arduino</exec_depend>
 
 
